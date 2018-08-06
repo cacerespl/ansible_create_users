@@ -1,0 +1,18 @@
+--- # Create a user
+
+- hosts: servers
+  become: yes
+  gather_facts: no
+  vars_files:
+  -  user.yml
+
+  tasks:
+    - name: Create a user
+      user: 
+        name: "{{ item }}"
+        password: "{{ password }}"
+      with_items: "{{ username }}"
+    - name: Force users to change their passwords
+      shell: chage -d 0 "{{ item }}"
+      with_items: "{{ username }}"
+
